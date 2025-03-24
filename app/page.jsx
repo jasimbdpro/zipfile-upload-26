@@ -65,7 +65,7 @@ export default function Home() {
     <div>
       <h1>Upload and Download Zips</h1>
       <div style={{ display: "flex", flexDirection: "column", width: "90vw" }}>
-        <label title='Don&apos;t use already used title'>
+        <label>
           File Title : &nbsp;
           <input
             type="text"
@@ -77,7 +77,7 @@ export default function Home() {
           <p>(avoid &#47;, &#63;, &#58; in file name and don&apos;t use whitespace in the end)</p>
         </label>
         <br />
-        <label title='It support any file, Max 10MB'>
+        <label>
           Choose Your File (Max 10MB): &nbsp;
           <input type="file" accept=".zip" onChange={(e) => setFile(e.target.files?.[0])} />
         </label>
