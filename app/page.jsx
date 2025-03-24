@@ -91,7 +91,7 @@ export default function Home() {
         <p>No zips uploaded yet.</p>
       ) : (
         <ul style={{ paddingLeft: '0px' }}>
-          {zipList.map((zip, index) => (
+          {zipList.slice().reverse().map((zip, index) => (
             <li key={index} style={{ listStyle: "none", marginBottom: "5px" }}>
               <h3 style={{ paddingBottom: "-2px", marginBottom: "-2px", }}>Title: <span style={{ color: "var(--foreground-secondary" }}>{zip.title}</span></h3>
               <a href={zip.url} download>⇓ Download Zip ⇓</a>
