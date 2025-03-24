@@ -8,14 +8,16 @@ export async function POST(req) {
     try {
         const data = await req.formData();
         const file = data.get("file");
-        let title = data.get("title");
+        const title = data.get("title");
 
         if (!file) return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
         if (!title) return NextResponse.json({ error: "No title provided" }, { status: 400 });
 
-        // Ensure title has .zip extension
-        if (!title.toLowerCase().endsWith(".zip")) {
-            title += ".zip";
+        let fileName = title;
+
+        // Ensure uploaded file name has .zip extension
+        if (!fileName.toLowerCase().endsWith(".zip")) {
+            fileName += ".zip-sss";
         }
 
         const bytes = await file.arrayBuffer();
@@ -30,7 +32,7 @@ export async function POST(req) {
 
         const uploadResponse = await new Promise((resolve, reject) => {
             cloudinary.uploader.upload_stream(
-                { resource_type: "raw", public_id: `zips/${title}`, folder: 'zips', },
+                { resource_type: "raw", public_id: `zips/${fileName}`, folder: 'zips', },
                 (error, result) => {
                     if (error) reject(error);
                     else resolve(result);
