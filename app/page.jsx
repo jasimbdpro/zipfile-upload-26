@@ -86,15 +86,15 @@ export default function Home() {
         )}
       </div>
 
-      <h2>Uploaded Zips:</h2>
+      <h2 style={{ marginBottom: "5px" }}>Uploaded Zips:</h2>
       {zipList.length === 0 ? (
         <p>No zips uploaded yet.</p>
       ) : (
         <ul style={{ paddingLeft: '0px' }}>
           {zipList.map((zip, index) => (
-            <li key={index} style={{ listStyle: "none" }}>
-              <h3 style={{ paddingBottom: "-2px", marginBottom: "-2px" }}>{zip.title}</h3>
-              <a href={zip.url} download>Download Zip</a>
+            <li key={index} style={{ listStyle: "none", marginBottom: "5px" }}>
+              <h3 style={{ paddingBottom: "-2px", marginBottom: "-2px", }}>Title: <span style={{ color: "var(--foreground-secondary" }}>{zip.title}</span></h3>
+              <a href={zip.url} download>⇓ Download Zip ⇓</a>
             </li>
           ))}
         </ul>
