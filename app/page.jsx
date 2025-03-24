@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useState, useEffect } from 'react';
 import './globals.css';
 
@@ -8,6 +8,16 @@ export default function Home() {
   const [uploading, setUploading] = useState(false);
   const [zipURL, setZipURL] = useState("");
   const [zipList, setZipList] = useState([]);
+
+  const fetchZips = async () => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/zips`);
+      const data = await response.json();
+      setZipList(data || []);
+    } catch (error) {
+      console.error('Error fetching zips:', error);
+    }
+  };
 
   // Handle file upload
   const handleUpload = async () => {
@@ -27,19 +37,15 @@ export default function Home() {
       const data = await res.json();
       if (data.error) throw new Error(data.error);
 
-      setZipURL(data.data.secure_url);
+      setZipURL(data.data.url);
       alert("Upload Successful!");
 
-      // Update the zip list state to include the newly uploaded file (triggers re-render)
-      setZipList(prevList => [
-        { title: data.data.title, url: data.data.url },
-        ...prevList
-      ]);
+      // Fetch the latest uploaded files from API
+      fetchZips();
 
       // Reset input fields
       setFile(null);
       setTitle("");
-
     } catch (error) {
       console.error("Upload failed:", error);
       alert("Upload failed. Try again.");
@@ -49,22 +55,11 @@ export default function Home() {
   };
 
   // Fetch all uploaded zips
-  // Fetch zips on component mount
   useEffect(() => {
-    const fetchZips = async () => {
-      try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/zips`);
-        const data = await response.json();
-        // Check if `data.zips` exists and is an array
-        setZipList(data || []); // Default to an empty array if no zips
-        console.log(data)
-      } catch (error) {
-        console.error('Error fetching zips:', error);
-      }
-    };
     fetchZips();
   }, []);
 
+  const reverseZipList = zipList.slice().reverse();
   return (
     <div>
       <h1>Upload and Download Zips</h1>
@@ -74,6 +69,7 @@ export default function Home() {
           <input
             type="text"
             placeholder="Write Title Here"
+            value={title}
             onChange={(e) => setTitle(e.target.value)}
             style={{ color: "gray" }}
           />
@@ -88,23 +84,16 @@ export default function Home() {
         <button onClick={handleUpload} disabled={uploading} style={{ border: "1px solid gray" }}>
           {uploading ? "Uploading..." : "Upload Zip"}
         </button>
-
-        {zipURL && (
-          <div>
-            <h2>Uploaded Zip</h2>
-            <a href={zipURL} download>Download Zip</a>
-          </div>
-        )}
       </div>
 
       <h2 style={{ marginBottom: "5px" }}>Uploaded Zips:</h2>
-      {zipList.length === 0 ? (
+      {reverseZipList.length === 0 ? (
         <p>No zips uploaded yet.</p>
       ) : (
         <ul style={{ paddingLeft: '0px' }}>
-          {zipList.slice().reverse().map((zip, index) => (
+          {reverseZipList.map((zip, index) => (
             <li key={index} style={{ listStyle: "none", marginBottom: "5px" }}>
-              <h3 style={{ paddingBottom: "-2px", marginBottom: "-2px", }}>Title: <span style={{ color: "var(--foreground-secondary" }}>{zip.title}</span></h3>
+              <h3>Title: <span style={{ color: "var(--foreground-secondary" }}>{zip.title}</span></h3>
               <a href={zip.url} download>⇓ Download Zip ⇓</a>
             </li>
           ))}
