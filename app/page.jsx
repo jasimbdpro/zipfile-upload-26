@@ -29,6 +29,17 @@ export default function Home() {
 
       setZipURL(data.data.secure_url);
       alert("Upload Successful!");
+
+      // Update the zip list state to include the newly uploaded file (triggers re-render)
+      setZipList(prevList => [
+        { title: data.data.title, url: data.data.url },
+        ...prevList
+      ]);
+
+      // Reset input fields
+      setFile(null);
+      setTitle("");
+
     } catch (error) {
       console.error("Upload failed:", error);
       alert("Upload failed. Try again.");
