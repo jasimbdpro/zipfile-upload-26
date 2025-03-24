@@ -6,7 +6,8 @@ export default function Home() {
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
   const [uploading, setUploading] = useState(false);
-  const [zipURL, setZipURL] = useState("");
+
+  // const [zipURL, setZipURL] = useState("");
   const [zipList, setZipList] = useState([]);
 
   const fetchZips = async () => {
@@ -37,7 +38,7 @@ export default function Home() {
       const data = await res.json();
       if (data.error) throw new Error(data.error);
 
-      setZipURL(data.data.url);
+      // setZipURL(data.data.url);
       alert("Upload Successful!");
 
       // Fetch the latest uploaded files from API
