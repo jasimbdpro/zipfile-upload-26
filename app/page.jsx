@@ -59,7 +59,7 @@ export default function Home() {
     fetchZips();
   }, []);
 
-  const reverseZipList = zipList.slice().reverse();
+
   return (
     <div>
       <h1>Upload and Download Zips</h1>
@@ -87,11 +87,11 @@ export default function Home() {
       </div>
 
       <h2 style={{ marginBottom: "5px" }}>Uploaded Zips:</h2>
-      {reverseZipList.length === 0 ? (
+      {zipList.length === 0 ? (
         <p>No zips uploaded yet.</p>
       ) : (
         <ul style={{ paddingLeft: '0px' }}>
-          {reverseZipList.map((zip, index) => (
+          {zipList.slice().reverse().map((zip, index) => (
             <li key={index} style={{ listStyle: "none", marginBottom: "5px" }}>
               <h3>Title: <span style={{ color: "var(--foreground-secondary" }}>{zip.title}</span></h3>
               <a href={zip.url} download>⇓ Download Zip ⇓</a>
