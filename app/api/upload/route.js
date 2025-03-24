@@ -8,10 +8,15 @@ export async function POST(req) {
     try {
         const data = await req.formData();
         const file = data.get("file");
-        const title = data.get("title");
+        let title = data.get("title");
 
         if (!file) return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
         if (!title) return NextResponse.json({ error: "No title provided" }, { status: 400 });
+
+        // Ensure title has .zip extension
+        if (!title.toLowerCase().endsWith(".zip")) {
+            title += ".zip";
+        }
 
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
